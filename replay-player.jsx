@@ -5,13 +5,24 @@ import { Player } from "@websim/remotion/player";
 import { ReplayComposition } from "replay-composition";
 function showReplay(container, replayData) {
   container.innerHTML = "";
-  if (!replayData || !replayData.frames || replayData.frames.length === 0) {
+  if (!replayData || !replayData.frames || replayData.frames.length < 2) {
     container.innerHTML = '<p style="color: white; text-align: center;">No replay available</p>';
     return null;
   }
-  const duration = Math.max(...replayData.frames.map((f) => f.time));
+  const firstFrameTime = replayData.frames[0].time;
+  const lastFrameTime = replayData.frames[replayData.frames.length - 1].time;
+  const duration = lastFrameTime - firstFrameTime;
+  if (duration <= 0) {
+    container.innerHTML = '<p style="color: white; text-align: center;">Replay data is corrupted.</p>';
+    return null;
+  }
   const fps = 30;
   const durationInFrames = Math.ceil(duration / 1e3 * fps);
+  const adjustedReplayData = {
+    ...replayData,
+    frames: replayData.frames.map((f) => ({ ...f, time: f.time - firstFrameTime })),
+    events: replayData.events.map((e) => ({ ...e, time: e.time - firstFrameTime }))
+  };
   const root = createRoot(container);
   root.render(
     /* @__PURE__ */ jsxDEV(
@@ -24,14 +35,14 @@ function showReplay(container, replayData) {
         compositionHeight: 960,
         controls: true,
         loop: true,
-        inputProps: { replayData },
+        inputProps: { replayData: adjustedReplayData },
         style: { width: "100%" }
       },
       void 0,
       false,
       {
         fileName: "<stdin>",
-        lineNumber: 22,
+        lineNumber: 37,
         columnNumber: 9
       },
       this

@@ -1,13 +1,41 @@
 import { jsxDEV } from "react/jsx-dev-runtime";
 import React from "react";
-import { AbsoluteFill, useCurrentFrame, Audio, Img, useVideoConfig, interpolate } from "remotion";
+import { AbsoluteFill, useCurrentFrame, Audio, Img, useVideoConfig } from "remotion";
+const findClosestFrameIndex = (frames, targetTime) => {
+  let low = 0;
+  let high = frames.length - 1;
+  if (targetTime <= frames[0].time) return 0;
+  if (targetTime >= frames[high].time) return high;
+  while (low <= high) {
+    const mid = Math.floor((low + high) / 2);
+    const midTime = frames[mid].time;
+    if (midTime === targetTime) {
+      return mid;
+    }
+    if (targetTime < midTime) {
+      if (mid > 0 && targetTime > frames[mid - 1].time) {
+        const diff1 = targetTime - frames[mid - 1].time;
+        const diff2 = midTime - targetTime;
+        return diff1 <= diff2 ? mid - 1 : mid;
+      }
+      high = mid - 1;
+    } else {
+      if (mid < frames.length - 1 && targetTime < frames[mid + 1].time) {
+        const diff1 = targetTime - midTime;
+        const diff2 = frames[mid + 1].time - targetTime;
+        return diff1 < diff2 ? mid : mid + 1;
+      }
+      low = mid + 1;
+    }
+  }
+  return low;
+};
 const ReplayComposition = ({ replayData }) => {
   const frame = useCurrentFrame();
   const { fps, width: compWidth, height: compHeight } = useVideoConfig();
   const currentTime = frame / fps * 1e3;
-  const frameData = replayData.frames.reduce((prev, curr) => {
-    return Math.abs(curr.time - currentTime) < Math.abs(prev.time - currentTime) ? curr : prev;
-  }, replayData.frames[0]);
+  const closestFrameIndex = findClosestFrameIndex(replayData.frames, currentTime);
+  const frameData = replayData.frames[closestFrameIndex];
   if (!frameData) return null;
   const gameWidth = replayData.width;
   const gameHeight = replayData.height;
@@ -23,7 +51,7 @@ const ReplayComposition = ({ replayData }) => {
     if (!audioSrc) return null;
     return /* @__PURE__ */ jsxDEV(Audio, { src: audioSrc, startFrom: 0, volume: 0.5 }, `audio-${i}-${startFrame}`, false, {
       fileName: "<stdin>",
-      lineNumber: 35,
+      lineNumber: 74,
       columnNumber: 16
     });
   }).filter(Boolean);
@@ -44,7 +72,7 @@ const ReplayComposition = ({ replayData }) => {
         backgroundColor: "rgba(255,255,255,0.3)"
       } }, void 0, false, {
         fileName: "<stdin>",
-        lineNumber: 51,
+        lineNumber: 90,
         columnNumber: 17
       }),
       /* @__PURE__ */ jsxDEV("div", { style: {
@@ -56,7 +84,7 @@ const ReplayComposition = ({ replayData }) => {
         backgroundColor: "rgba(255,255,255,0.3)"
       } }, void 0, false, {
         fileName: "<stdin>",
-        lineNumber: 59,
+        lineNumber: 98,
         columnNumber: 17
       }),
       frameData.particles.map((particle, i) => /* @__PURE__ */ jsxDEV(
@@ -76,7 +104,7 @@ const ReplayComposition = ({ replayData }) => {
         false,
         {
           fileName: "<stdin>",
-          lineNumber: 70,
+          lineNumber: 109,
           columnNumber: 21
         }
       )),
@@ -112,15 +140,15 @@ const ReplayComposition = ({ replayData }) => {
             transform: `rotateY(${j * (360 / 16)}deg) translateZ(${translateZ}px)`
           } }, j, false, {
             fileName: "<stdin>",
-            lineNumber: 111,
+            lineNumber: 150,
             columnNumber: 41
           })) }, void 0, false, {
             fileName: "<stdin>",
-            lineNumber: 104,
+            lineNumber: 143,
             columnNumber: 33
           }) }, `barrel-3d-${i}`, false, {
             fileName: "<stdin>",
-            lineNumber: 96,
+            lineNumber: 135,
             columnNumber: 29
           }),
           /* @__PURE__ */ jsxDEV("div", { style: {
@@ -135,12 +163,12 @@ const ReplayComposition = ({ replayData }) => {
             zIndex: 10
           }, children: barrel.health }, `barrel-health-${i}`, false, {
             fileName: "<stdin>",
-            lineNumber: 125,
+            lineNumber: 164,
             columnNumber: 29
           })
         ] }, `barrel-fragment-${i}`, true, {
           fileName: "<stdin>",
-          lineNumber: 95,
+          lineNumber: 134,
           columnNumber: 25
         });
       }),
@@ -161,7 +189,7 @@ const ReplayComposition = ({ replayData }) => {
           false,
           {
             fileName: "<stdin>",
-            lineNumber: 151,
+            lineNumber: 190,
             columnNumber: 25
           }
         ),
@@ -176,12 +204,12 @@ const ReplayComposition = ({ replayData }) => {
           textShadow: `0 0 ${4 * scale}px black`
         }, children: barrier.health }, void 0, false, {
           fileName: "<stdin>",
-          lineNumber: 155,
+          lineNumber: 194,
           columnNumber: 25
         })
       ] }, `barrier-${i}`, true, {
         fileName: "<stdin>",
-        lineNumber: 144,
+        lineNumber: 183,
         columnNumber: 21
       })),
       frameData.enemies.map((enemy, i) => /* @__PURE__ */ jsxDEV("div", { style: {
@@ -200,12 +228,12 @@ const ReplayComposition = ({ replayData }) => {
         false,
         {
           fileName: "<stdin>",
-          lineNumber: 179,
+          lineNumber: 218,
           columnNumber: 25
         }
       ) }, `enemy-${i}`, false, {
         fileName: "<stdin>",
-        lineNumber: 172,
+        lineNumber: 211,
         columnNumber: 21
       })),
       frameData.projectiles.map((projectile, i) => /* @__PURE__ */ jsxDEV("div", { style: {
@@ -224,12 +252,12 @@ const ReplayComposition = ({ replayData }) => {
         false,
         {
           fileName: "<stdin>",
-          lineNumber: 195,
+          lineNumber: 234,
           columnNumber: 25
         }
       ) }, `projectile-${i}`, false, {
         fileName: "<stdin>",
-        lineNumber: 188,
+        lineNumber: 227,
         columnNumber: 21
       })),
       frameData.powerups.map((powerup, i) => /* @__PURE__ */ jsxDEV("div", { style: {
@@ -248,12 +276,12 @@ const ReplayComposition = ({ replayData }) => {
         false,
         {
           fileName: "<stdin>",
-          lineNumber: 211,
+          lineNumber: 250,
           columnNumber: 25
         }
       ) }, `powerup-${i}`, false, {
         fileName: "<stdin>",
-        lineNumber: 204,
+        lineNumber: 243,
         columnNumber: 21
       })),
       /* @__PURE__ */ jsxDEV("div", { style: {
@@ -274,7 +302,7 @@ const ReplayComposition = ({ replayData }) => {
           false,
           {
             fileName: "<stdin>",
-            lineNumber: 227,
+            lineNumber: 266,
             columnNumber: 21
           }
         ),
@@ -294,18 +322,18 @@ const ReplayComposition = ({ replayData }) => {
           false,
           {
             fileName: "<stdin>",
-            lineNumber: 231,
+            lineNumber: 270,
             columnNumber: 21
           }
         )
       ] }, void 0, true, {
         fileName: "<stdin>",
-        lineNumber: 219,
+        lineNumber: 258,
         columnNumber: 17
       })
     ] }, void 0, true, {
       fileName: "<stdin>",
-      lineNumber: 43,
+      lineNumber: 82,
       columnNumber: 13
     }),
     /* @__PURE__ */ jsxDEV("div", { style: {
@@ -319,12 +347,12 @@ const ReplayComposition = ({ replayData }) => {
       textTransform: "uppercase"
     }, children: "Instant Replay" }, void 0, false, {
       fileName: "<stdin>",
-      lineNumber: 245,
+      lineNumber: 284,
       columnNumber: 13
     })
   ] }, void 0, true, {
     fileName: "<stdin>",
-    lineNumber: 39,
+    lineNumber: 78,
     columnNumber: 9
   });
 };
