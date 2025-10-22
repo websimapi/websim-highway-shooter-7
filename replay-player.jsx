@@ -7,7 +7,7 @@ function showReplay(container, replayData) {
   container.innerHTML = "";
   if (!replayData || !replayData.frames || replayData.frames.length === 0) {
     container.innerHTML = '<p style="color: white; text-align: center;">No replay available</p>';
-    return;
+    return null;
   }
   const duration = Math.max(...replayData.frames.map((f) => f.time));
   const fps = 30;
@@ -37,6 +37,7 @@ function showReplay(container, replayData) {
       this
     )
   );
+  return root;
 }
 export {
   showReplay

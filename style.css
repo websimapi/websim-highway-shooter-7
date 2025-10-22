@@ -73,6 +73,10 @@ button {
     display: inline-block;
 }
 
+#game-over-screen button {
+    margin: 5px;
+}
+
 #replay-container {
     margin: 20px auto;
     max-width: 400px;

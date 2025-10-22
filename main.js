@@ -8,6 +8,7 @@ window.addEventListener('load', () => {
     canvas.height = window.innerHeight;
 
     let game;
+    let replayRoot = null;
 
     const startScreen = document.getElementById('start-screen');
     const startButton = document.getElementById('start-button');
@@ -62,10 +63,40 @@ window.addEventListener('load', () => {
         uiContainer.style.display = 'none';
         gameOverScreen.style.display = 'flex';
         finalScoreEl.textContent = score;
-        
-        // Show replay
+
+        const watchReplayButton = document.getElementById('watch-replay-button');
+        const backToScoreButton = document.getElementById('back-to-score-button');
+        const gameOverContent = document.getElementById('game-over-content');
+        const replayView = document.getElementById('replay-view');
         const replayContainer = document.getElementById('replay-container');
-        showReplay(replayContainer, replayData);
+
+        gameOverContent.style.display = 'block';
+        replayView.style.display = 'none';
+
+        // To prevent multiple listeners, we clone and replace the button
+        const newWatchReplayButton = watchReplayButton.cloneNode(true);
+        watchReplayButton.parentNode.replaceChild(newWatchReplayButton, watchReplayButton);
+
+        const newBackToScoreButton = backToScoreButton.cloneNode(true);
+        backToScoreButton.parentNode.replaceChild(newBackToScoreButton, backToScoreButton);
+
+        newWatchReplayButton.addEventListener('click', () => {
+            gameOverContent.style.display = 'none';
+            replayView.style.display = 'block';
+            if (replayRoot) {
+                replayRoot.unmount();
+            }
+            replayRoot = showReplay(replayContainer, replayData);
+        });
+
+        newBackToScoreButton.addEventListener('click', () => {
+            gameOverContent.style.display = 'block';
+            replayView.style.display = 'none';
+            if (replayRoot) {
+                replayRoot.unmount();
+                replayRoot = null;
+            }
+        });
     }
 
     function updateScore(score) {
