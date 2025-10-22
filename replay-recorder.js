@@ -80,7 +80,7 @@ export default class ReplayRecorder {
                 playerShip: 'player_ship.png',
                 weapon: 'weapon.png',
                 projectile: 'projectile.png',
-                barrel: 'barrel_texture.png',
+                barrel: 'barrel.png',
                 barrier: 'barrier.png',
                 enemy: 'enemy.png',
                 rapidFire: 'rapid_fire.png',
