@@ -1,7 +1,6 @@
 export default class ReplayRecorder {
     constructor(game) {
         this.game = game;
-        this.maxDuration = 5000; // 5 seconds in ms
         this.frames = [];
         this.events = [];
         this.startTime = Date.now();
@@ -61,10 +60,7 @@ export default class ReplayRecorder {
 
         this.frames.push(frame);
 
-        // Keep only last maxDuration worth of frames
-        const cutoffTime = currentTime - this.maxDuration;
-        this.frames = this.frames.filter(f => f.time > cutoffTime);
-        this.events = this.events.filter(e => e.time > cutoffTime);
+        // No longer limiting duration, so the full replay is available.
     }
 
     recordEvent(type, data) {
