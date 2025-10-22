@@ -99,7 +99,7 @@ const ReplayComposition = ({ replayData }) => {
             width: "100%",
             height: "100%",
             transformStyle: "preserve-3d",
-            transform: `rotateX(${barrel.rotation}rad) rotateZ(-90deg)`
+            transform: `rotateX(${-barrel.rotation}rad) rotateZ(-90deg)`
           }, children: Array.from({ length: 16 }).map((_, j) => /* @__PURE__ */ jsxDEV("div", { style: {
             position: "absolute",
             width: faceWidth,
