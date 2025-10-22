@@ -45,7 +45,7 @@ export default class Barrel {
         // --- Three.js Object ---
         const radius = this.width / 2;
         const geometry = new THREE.CylinderGeometry(radius, radius, this.width, 16);
-        const material = new THREE.MeshBasicMaterial({ map: this.game.assets.barrelTexture });
+        const material = new THREE.MeshStandardMaterial({ map: this.game.assets.barrelTexture });
         this.mesh = new THREE.Mesh(geometry, material);
         this.mesh.rotation.z = Math.PI / 2; // Lay it on its side, along the X-axis
         this.game.scene.add(this.mesh);

@@ -24,7 +24,7 @@ export default class Game {
         this.renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
         this.renderer.setSize(width, height);
         this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        this.renderer.outputEncoding = THREE.sRGBEncoding;
+        this.renderer.outputColorSpace = THREE.SRGBColorSpace; // Fix for washed out colors
         
         this.scene = new THREE.Scene();
         
@@ -33,9 +33,12 @@ export default class Game {
         this.camera = new THREE.PerspectiveCamera(fov, width / height, 0.1, 2000);
         this.camera.position.set(0, 0, cameraDistance);
 
-        const ambientLight = new THREE.AmbientLight(0xffffff, 1.0);
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
         this.scene.add(ambientLight);
-        
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+        directionalLight.position.set(-1, 1, 1);
+        this.scene.add(directionalLight);
+
         this.assets = {};
         this.assetsLoaded = false;
 
