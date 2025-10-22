@@ -86,7 +86,7 @@ export default class ReplayRecorder {
                 playerShip: 'player_ship.png',
                 weapon: 'weapon.png',
                 projectile: 'projectile.png',
-                barrel: 'barrel.png',
+                barrelTexture: 'barrel_texture.png', // Using the texture for the replay
                 barrier: 'barrier.png',
                 enemy: 'enemy.png',
                 rapidFire: 'rapid_fire.png',
