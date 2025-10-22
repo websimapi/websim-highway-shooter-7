@@ -81,40 +81,44 @@ const ReplayComposition = ({ replayData }) => {
         }
       )),
       frameData.barrels.map((barrel, i) => {
-        const perspectiveSquash = 0.8;
-        const textureShift = barrel.rotation / (2 * Math.PI) * 100;
+        const scaledBarrelWidth = barrel.width * scale;
+        const scaledBarrelHeight = barrel.height * scale;
+        const radius = scaledBarrelHeight / 2;
+        const circumference = 2 * Math.PI * radius;
+        const faceWidth = circumference / 16;
+        const translateZ = Math.cos(2 * Math.PI / 32) * radius;
         return /* @__PURE__ */ jsxDEV("div", { style: {
           position: "absolute",
           left: barrel.x * scale,
           top: barrel.y * scale,
-          width: barrel.width * scale,
-          height: barrel.height * scale * perspectiveSquash,
-          borderRadius: `${barrel.width * scale / 2}px / ${barrel.height * scale * perspectiveSquash / 2}px`,
-          overflow: "hidden",
-          transform: "translateZ(0)"
-          // For better performance on transforms/overflow
+          width: scaledBarrelWidth,
+          height: scaledBarrelHeight,
+          transformStyle: "preserve-3d"
         }, children: [
-          /* @__PURE__ */ jsxDEV(
-            Img,
-            {
-              src: replayData.assets.barrelTexture,
-              style: {
-                position: "absolute",
-                top: 0,
-                left: `${textureShift}%`,
-                width: "100%",
-                height: "100%",
-                backgroundRepeat: "repeat-x"
-              }
-            },
-            void 0,
-            false,
-            {
-              fileName: "<stdin>",
-              lineNumber: 101,
-              columnNumber: 30
-            }
-          ),
+          /* @__PURE__ */ jsxDEV("div", { style: {
+            width: "100%",
+            height: "100%",
+            transformStyle: "preserve-3d",
+            transform: `rotateX(${barrel.rotation}rad) rotateZ(-90deg)`
+          }, children: Array.from({ length: 16 }).map((_, j) => /* @__PURE__ */ jsxDEV("div", { style: {
+            position: "absolute",
+            width: faceWidth,
+            height: scaledBarrelWidth,
+            left: radius - faceWidth / 2,
+            top: (scaledBarrelHeight - scaledBarrelWidth) / 2,
+            backgroundImage: `url(${replayData.assets.barrelTexture})`,
+            backgroundSize: `${circumference}px ${scaledBarrelWidth}px`,
+            backgroundPosition: `-${j * faceWidth}px 0`,
+            transform: `rotateY(${j * (360 / 16)}deg) translateZ(${translateZ}px)`
+          } }, j, false, {
+            fileName: "<stdin>",
+            lineNumber: 110,
+            columnNumber: 37
+          })) }, void 0, false, {
+            fileName: "<stdin>",
+            lineNumber: 103,
+            columnNumber: 30
+          }),
           /* @__PURE__ */ jsxDEV("div", { style: {
             position: "absolute",
             top: "50%",
@@ -123,15 +127,17 @@ const ReplayComposition = ({ replayData }) => {
             color: "white",
             fontSize: 32 * scale,
             fontWeight: "bold",
-            textShadow: `0 0 ${4 * scale}px black`
+            textShadow: `0 0 ${4 * scale}px black`,
+            zIndex: 1
+            // Ensure text is on top
           }, children: barrel.health }, void 0, false, {
             fileName: "<stdin>",
-            lineNumber: 112,
+            lineNumber: 123,
             columnNumber: 29
           })
         ] }, `barrel-${i}`, true, {
           fileName: "<stdin>",
-          lineNumber: 91,
+          lineNumber: 95,
           columnNumber: 25
         });
       }),
@@ -152,7 +158,7 @@ const ReplayComposition = ({ replayData }) => {
           false,
           {
             fileName: "<stdin>",
-            lineNumber: 137,
+            lineNumber: 149,
             columnNumber: 25
           }
         ),
@@ -167,12 +173,12 @@ const ReplayComposition = ({ replayData }) => {
           textShadow: `0 0 ${4 * scale}px black`
         }, children: barrier.health }, void 0, false, {
           fileName: "<stdin>",
-          lineNumber: 141,
+          lineNumber: 153,
           columnNumber: 25
         })
       ] }, `barrier-${i}`, true, {
         fileName: "<stdin>",
-        lineNumber: 130,
+        lineNumber: 142,
         columnNumber: 21
       })),
       frameData.enemies.map((enemy, i) => /* @__PURE__ */ jsxDEV("div", { style: {
@@ -191,12 +197,12 @@ const ReplayComposition = ({ replayData }) => {
         false,
         {
           fileName: "<stdin>",
-          lineNumber: 165,
+          lineNumber: 177,
           columnNumber: 25
         }
       ) }, `enemy-${i}`, false, {
         fileName: "<stdin>",
-        lineNumber: 158,
+        lineNumber: 170,
         columnNumber: 21
       })),
       frameData.projectiles.map((projectile, i) => /* @__PURE__ */ jsxDEV("div", { style: {
@@ -215,12 +221,12 @@ const ReplayComposition = ({ replayData }) => {
         false,
         {
           fileName: "<stdin>",
-          lineNumber: 181,
+          lineNumber: 193,
           columnNumber: 25
         }
       ) }, `projectile-${i}`, false, {
         fileName: "<stdin>",
-        lineNumber: 174,
+        lineNumber: 186,
         columnNumber: 21
       })),
       frameData.powerups.map((powerup, i) => /* @__PURE__ */ jsxDEV("div", { style: {
@@ -239,12 +245,12 @@ const ReplayComposition = ({ replayData }) => {
         false,
         {
           fileName: "<stdin>",
-          lineNumber: 197,
+          lineNumber: 209,
           columnNumber: 25
         }
       ) }, `powerup-${i}`, false, {
         fileName: "<stdin>",
-        lineNumber: 190,
+        lineNumber: 202,
         columnNumber: 21
       })),
       /* @__PURE__ */ jsxDEV("div", { style: {
@@ -265,7 +271,7 @@ const ReplayComposition = ({ replayData }) => {
           false,
           {
             fileName: "<stdin>",
-            lineNumber: 213,
+            lineNumber: 225,
             columnNumber: 21
           }
         ),
@@ -285,13 +291,13 @@ const ReplayComposition = ({ replayData }) => {
           false,
           {
             fileName: "<stdin>",
-            lineNumber: 217,
+            lineNumber: 229,
             columnNumber: 21
           }
         )
       ] }, void 0, true, {
         fileName: "<stdin>",
-        lineNumber: 205,
+        lineNumber: 217,
         columnNumber: 17
       })
     ] }, void 0, true, {
@@ -310,7 +316,7 @@ const ReplayComposition = ({ replayData }) => {
       textTransform: "uppercase"
     }, children: "Instant Replay" }, void 0, false, {
       fileName: "<stdin>",
-      lineNumber: 231,
+      lineNumber: 243,
       columnNumber: 13
     })
   ] }, void 0, true, {
