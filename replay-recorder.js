@@ -15,7 +15,9 @@ export default class ReplayRecorder {
             player: {
                 x: this.game.player.x,
                 y: this.game.player.y,
-                rotation: this.game.player.rotation
+                rotation: this.game.player.rotation,
+                width: this.game.player.width,
+                height: this.game.player.height
             },
             projectiles: this.game.projectiles.map(p => ({
                 x: p.x,
@@ -25,7 +27,9 @@ export default class ReplayRecorder {
                 x: b.x,
                 y: b.y,
                 health: b.health,
-                rotation: b.meshRotation
+                rotation: b.meshRotation,
+                width: b.width,
+                height: b.height
             })),
             barriers: this.game.barriers.map(b => ({
                 x: b.x,
@@ -38,7 +42,9 @@ export default class ReplayRecorder {
                 x: e.x,
                 y: e.y,
                 health: e.health,
-                scale: e.width / e.baseWidth
+                scale: e.width / e.baseWidth,
+                baseWidth: e.baseWidth,
+                baseHeight: e.baseHeight
             })),
             powerups: this.game.powerups.map(p => ({
                 x: p.x,

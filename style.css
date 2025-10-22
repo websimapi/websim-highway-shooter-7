@@ -77,9 +77,14 @@ button {
     margin: 5px;
 }
 
+#replay-view {
+    width: 90vw;
+    max-width: 500px;
+}
+
 #replay-container {
     margin: 20px auto;
-    max-width: 400px;
+    width: 100%;
     border: 2px solid rgba(255, 255, 255, 0.3);
     border-radius: 8px;
     overflow: hidden;

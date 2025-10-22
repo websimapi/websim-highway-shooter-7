@@ -84,8 +84,8 @@ const ReplayComposition = ({ replayData }) => {
         position: "absolute",
         left: barrel.x * scale,
         top: barrel.y * scale,
-        width: 80 * scale,
-        height: 80 * scale
+        width: barrel.width * scale,
+        height: barrel.height * scale
       }, children: [
         /* @__PURE__ */ jsxDEV(
           Img,
@@ -168,8 +168,8 @@ const ReplayComposition = ({ replayData }) => {
         position: "absolute",
         left: enemy.x * scale,
         top: enemy.y * scale,
-        width: 60 * scale * enemy.scale,
-        height: 60 * scale * enemy.scale
+        width: enemy.baseWidth * enemy.scale * scale,
+        height: enemy.baseHeight * enemy.scale * scale
       }, children: /* @__PURE__ */ jsxDEV(
         Img,
         {
@@ -240,8 +240,8 @@ const ReplayComposition = ({ replayData }) => {
         position: "absolute",
         left: frameData.player.x * scale,
         top: frameData.player.y * scale,
-        width: 80 * scale,
-        height: 80 * scale,
+        width: frameData.player.width * scale,
+        height: frameData.player.height * scale,
         transform: `rotate(${frameData.player.rotation}rad)`
       }, children: [
         /* @__PURE__ */ jsxDEV(
