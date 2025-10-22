@@ -32,11 +32,14 @@ export default class Game {
         this.camera = new THREE.PerspectiveCamera(fov, width / height, 0.1, 2000);
         this.camera.position.set(0, 0, cameraDistance);
 
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+        const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
         this.scene.add(ambientLight);
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-        directionalLight.position.set(-1, 1, 1);
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
+        directionalLight.position.set(1, 1, 1).normalize();
         this.scene.add(directionalLight);
+        
+        const hemisphereLight = new THREE.HemisphereLight(0xffffff, 0x444444, 0.8);
+        this.scene.add(hemisphereLight);
 
         this.assets = {};
         this.assetsLoaded = false;
