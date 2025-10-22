@@ -21,10 +21,11 @@ export default class Game {
         this.height = height;
 
         // --- Three.js Setup ---
-        this.renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+        this.renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
         this.renderer.setSize(width, height);
         this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         this.renderer.outputColorSpace = THREE.SRGBColorSpace; // Fix for washed out colors
+        this.renderer.setClearColor(0x283747); // Set background color for the scene
         
         this.scene = new THREE.Scene();
         
